@@ -1,6 +1,7 @@
 var express = require("express");
 var multer= require("multer");
 var path=require("path");
+var fs=require('fs');
 var bodyParser=require("body-parser");
 
 var app= express();
@@ -16,6 +17,11 @@ app.get('/',function(req,res){
 
 app.post('/upload',upload.single('file'),function(req,res){
     res.send({'size':req.file.size});
+    fs.unlink('./uploads/'+req.file.filename,function(err){
+        if(err) throw err;
+        console.log('deleted '+req.file.filename + '.');
+    })
+    
 });
 
 app.listen(8080,function(){
